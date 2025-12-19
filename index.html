@@ -35,7 +35,7 @@
             --light-color: #ffffff;
             --gray-color: #666666;
             --transition: all 0.3s ease;
-            --max-page-width: 900px; /* reduced width to make layout less wide */
+            --max-page-width: 900px;
         }
 
         * {
@@ -115,12 +115,13 @@
             z-index: 2;
         }
 
+        /* Responsive circular profile image */
         .profile-img {
-            width: 160px;
-            height: 160px;
+            width: clamp(110px, 22vw, 160px);
+            aspect-ratio: 1 / 1;
             border-radius: 50%;
-            border: 5px solid rgba(255, 255, 255, 0.9);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+            border: 5px solid rgba(255,255,255,0.9);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
             overflow: hidden;
             display: inline-block;
             background: linear-gradient(135deg, var(--light-color) 0%, #f5f5f5 100%);
@@ -132,12 +133,15 @@
             box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
         }
 
+        /* Use contain on very small screens so the whole portrait fits inside the circle */
         .profile-img img {
             width: 100%;
             height: 100%;
-            object-fit: cover;
+            object-fit: cover; /* default keeps circular crop on larger screens */
+            object-position: center;
             display: block;
             border-radius: 50%;
+            transition: transform 0.25s ease;
         }
 
         .name {
@@ -150,30 +154,19 @@
             text-align: center;
         }
 
-       /* Keep the title single line on small screens (already added earlier) */
-    .title {
-        color: rgba(255, 255, 255, 0.95);
-        margin-bottom: 15px;
-        font-weight: 500;
-        letter-spacing: 0.5px;
-        position: relative;
-        z-index: 2;
-        text-align: center;
-
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-
-        font-size: clamp(14px, 3.2vw, 1.1rem);
-    }
-
-    @media (max-width: 360px) {
         .title {
-            font-size: 13px;
-            letter-spacing: 0.3px;
+            color: rgba(255, 255, 255, 0.95);
+            margin-bottom: 15px;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            font-size: clamp(14px, 3.2vw, 1.1rem);
         }
-        .name { font-size: 1.6rem; }
-    }
 
         .brand-name {
             font-weight: 700;
@@ -282,6 +275,128 @@
         .link-card.linkedin .link-icon  { color: #0A66C2; }
         .link-card.email .link-icon     { color: #D44638; }
         .link-card.spotify .link-icon   { color: #1DB954; }
+
+        /* UPDATED: Brand Ambassador section - Bolder, cleaner */
+        .brand-section {
+            width: 100%;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .brand-header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .brand-header h3 {
+            font-size: 1.3rem;
+            color: var(--brand-color);
+            font-weight: 700;
+            margin: 0;
+        }
+
+        .brand-header i {
+            color: var(--brand-color);
+            font-size: 1.4rem;
+            background: var(--brand-color-light);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Brand container (no nested anchor) */
+        .brand-container {
+            display: block;
+            text-decoration: none;
+            color: inherit;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            transition: var(--transition);
+            border: 3px solid var(--brand-color);
+            position: relative;
+            background: white;
+            padding: 0;
+        }
+
+        .brand-link {
+            display: block;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* Make the image area scale responsively and keep aspect ratio on larger screens */
+        .brand-img {
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            max-height: 520px;
+            overflow: hidden;
+            position: relative;
+            display: block;
+            background: #f3f3f3;
+        }
+
+        /* Default: image fills container and is cropped nicely when needed */
+        .brand-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            display: block;
+            transition: transform 0.5s ease;
+        }
+
+        /* Keep overlay as a subtle dark gradient */
+        .brand-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 45%;
+            background: linear-gradient(to top, rgba(0,0,0,0.45), transparent);
+            pointer-events: none;
+        }
+
+        /* Button moved OUTSIDE the image and centered */
+        .brand-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 25px;
+            border-radius: 8px;
+            background: var(--brand-color);
+            color: white;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.05rem;
+            transition: var(--transition);
+            border: 2px solid white;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.14);
+            margin: 14px auto;
+            width: max-content;
+        }
+
+        .brand-btn:focus {
+            outline: 3px solid rgba(255,102,0,0.2);
+            outline-offset: 3px;
+        }
+
+        .brand-btn:hover {
+            background: white;
+            color: var(--brand-color);
+            transform: scale(1.05);
+        }
+
+        /* Keep the image zoom effect on hover for larger screens */
+        .brand-container:hover .brand-img img {
+            transform: scale(1.05);
+        }
 
         /* Newsletter Section */
         .newsletter-section {
@@ -411,6 +526,10 @@
         }
 
         /* Responsive Design */
+        @media (max-width: 992px) {
+            .links-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+
         @media (max-width: 768px) {
             body { padding: 10px; background-attachment: scroll; }
             .container { margin: 10px 0; border-radius: 15px; }
@@ -419,30 +538,44 @@
             .links-grid { grid-template-columns: repeat(2, 1fr); }
             .articles-grid { grid-template-columns: 1fr; }
             .name { font-size: 2rem; }
-            .profile-img { width: 140px; height: 140px; }
+            /* slightly smaller profile on tablets */
+            .profile-img { width: clamp(100px, 22vw, 140px); height: auto; }
             .newsletter-section { padding: 18px; }
+            /* let brand image be slightly shorter but keep cover behavior */
+            .brand-img { aspect-ratio: 16/9; max-height: 360px; }
+            .brand-header h3 { font-size: 1.2rem; }
         }
 
+        /* FIX: small-screen image behavior — do not crop entire image on very small devices */
         @media (max-width: 480px) {
             .links-grid { grid-template-columns: 1fr; }
-            .profile-img { width: 130px; height: 130px; }
+            /* profile: show entire portrait inside the circle (use contain) */
+            .profile-img { width: clamp(90px, 28vw, 130px); aspect-ratio: 1/1; }
+            .profile-img img { object-fit: contain; padding: 6px; background: transparent; } /* contain shows whole face */
             .content { padding: 12px; }
             .header { padding: 22px 12px 12px; }
+            .brand-btn { padding: 10px 20px; font-size: 1rem; }
+
+            /* Brand image: remove the forced aspect-ratio and let image display full width with height:auto
+               Use object-fit: contain so the whole image is visible rather than cropped. */
+            .brand-img { aspect-ratio: unset; height: auto; max-height: none; }
+            .brand-img img { width: 100%; height: auto; object-fit: contain; object-position: center; }
         }
 
         /* Desktop specific: force narrower layout and 2x2 articles */
         @media (min-width: 992px) {
             .links-grid { grid-template-columns: repeat(3, 1fr); gap: 14px; }
-            /* Force articles into 2 columns on desktop so 4 items form a 2x2 grid */
             .articles-grid { grid-template-columns: repeat(2, 1fr); gap: 20px; }
-            .article-img { height: 160px; } /* slightly taller on desktop but not too wide */
+            .article-img { height: 160px; }
             .content { padding: 32px; }
+            .brand-img { height: 220px; }
         }
 
         /* Animation */
         @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-        .header, .links-section, .newsletter-section, .articles-grid, .footer { animation: fadeIn 0.6s ease-out; }
+        .header, .links-section, .brand-section, .newsletter-section, .articles-grid, .footer { animation: fadeIn 0.6s ease-out; }
         .links-section { animation-delay: 0.08s; }
+        .brand-section { animation-delay: 0.12s; }
         .newsletter-section { animation-delay: 0.16s; }
         .articles-grid { animation-delay: 0.24s; }
         .footer { animation-delay: 0.32s; }
@@ -453,7 +586,7 @@
         <!-- Brand Colored Header Section -->
         <div class="header">
             <div class="profile-container">
-                <div class="profile-img">
+                <div class="profile-img" id="profileImg">
                     <img src="./assets/john-blakley.png" alt="John Blakley" loading="lazy" width="160" height="160">
                 </div>
             </div>
@@ -507,6 +640,28 @@
                 </div>
             </div>
 
+            <!-- UPDATED: Brand Ambassador Section - Button moved OUTSIDE the image -->
+            <div class="brand-section">
+                <div class="brand-header">
+                    <i class="fas fa-star"></i>
+                    <h3>Brand Ambassador</h3>
+                </div>
+
+                <div class="brand-container" aria-hidden="false">
+                    <a class="brand-link" href="https://zaysheen.com/" target="_blank" rel="noopener noreferrer" aria-label="Shop Zaysheen">
+                        <div class="brand-img" aria-hidden="true">
+                            <img src="./assets/zay-sheen.jpeg" alt="John Blakley — Brand Ambassador for Zaysheen" loading="lazy" width="1200" height="675">
+                            <div class="brand-overlay" aria-hidden="true"></div>
+                        </div>
+                    </a>
+
+                    <!-- Button is now its own link (accessible, keyboard-focusable) -->
+                    <a class="brand-btn" href="https://zaysheen.com/" target="_blank" rel="noopener noreferrer" aria-label="Shop Zaysheen - Shop Now">
+                        <i class="fas fa-shopping-bag" aria-hidden="true"></i> Shop Now
+                    </a>
+                </div>
+            </div>
+
             <!-- Articles & Interviews -->
             <div class="links-section">
                 <h2 class="section-title"><i class="fas fa-newspaper"></i> Articles &amp; Interviews</h2>
@@ -549,8 +704,8 @@
                             <img src="./assets/unknown-preacher.webp" alt="The Unknown Preacher LA & JSpeaks" loading="lazy" width="1200" height="630">
                         </div>
                         <div class="article-content">
-                            <a href="https://open.spotify.com/episode/2MB9PksfDxNdOsI3PwbPJf?si=q4EVIzpmRe2x9-nMEz7HSQ&nd=1&utm_source=sms&utm_medium=sharing&_branch_referrer=H4sIAAAAAAAAA8soKSkottLXLy7IL8lMq9TLyczL1jf2M01xc4zMLwlJsq8rSk1LLSrKzEuPTyrKLy9OLbL1zU%2FKzElVNTIITkxLLMoEACcBfJ5DAAAA&_branch_match_id=1452670764289678457" target="_blank" rel="noopener noreferrer" class="article-link" aria-label="Read Shoutout North Carolina Feature">
-                                listen now <i class="fas fa-arrow-right" aria-hidden="true"></i>
+                            <a href="https://open.spotify.com/episode/2MB9PksfDxNdOsI3PwbPJf?si=q4EVIzpmRe2x9-nMEz7HSQ&nd=1&utm_source=sms&utm_medium=sharing&_branch_referrer=H4sIAAAAAAAAA8soKSkottLXLy7IL8lMq9TLyczL1jf2M01xc4zMLwlJsq8rSk1LLSrKzEuPTyrKLy9OLbL1zU%2FKzElVNTIITkxLLMoEACcBfJ5DAAAA&_branch_match_id=1452670764289678457" target="_blank" rel="noopener noreferrer" class="article-link" aria-label="Listen on Spotify">
+                                Listen Now <i class="fas fa-arrow-right" aria-hidden="true"></i>
                             </a>
                         </div>
                     </div>
@@ -594,10 +749,23 @@
         });
 
         // Profile image click effect (optional)
-        document.querySelector('.profile-img').addEventListener('click', function() {
-            this.style.transform = 'scale(1.05)';
-            setTimeout(() => { this.style.transform = 'scale(1)'; }, 300);
-        });
+        const profile = document.querySelector('.profile-img');
+        if (profile) {
+            profile.addEventListener('click', function() {
+                this.style.transform = 'scale(1.05)';
+                setTimeout(() => { this.style.transform = 'scale(1)'; }, 300);
+            });
+        }
+
+        // Ensure brand button is keyboard accessible and gives focus ring on keyboard focus
+        const brandBtn = document.querySelector('.brand-btn');
+        if (brandBtn) {
+            brandBtn.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    brandBtn.click();
+                }
+            });
+        }
     </script>
 </body>
 </html>
